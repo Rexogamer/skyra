@@ -103,11 +103,11 @@
 	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
 	"FFXIVDescription": "Queries the Final Fantasy 14 API for game data",
 	"FFXIVExtended": {
-		"usages": ["item Item Name", "character? Character Name"],
+		"usages": ["item Item", "character Character"],
 		"extendedHelp": "This command allows you to character and item data for FFXIV.\nFor item a wildcard search is performed so if your term is in the middle of the name it can still match.",
 		"explainedUsage": [
-			["search type", "(optional, defaults to \"character\") \"character\" or \"item\""],
-			["query", "The player or thing to search."]
+			["item/character", "(optional, defaults to \"character\") Whether you want to search for a character or an item."],
+			["Item/Character", "The player character or item to search."]
 		],
 		"examples": ["item potion", "character Laytlan Ardevon", "Laytlan Ardevon"]
 	},
@@ -143,10 +143,10 @@
 	"FFXIVNoItemFound": "{{REDCROSS}} I am sorry, but I was unable to find an item with that query.",
 	"fortniteDescription": "Gets player statistics for a Fortnite player",
 	"fortniteExtended": {
-		"usages": ["xbox/psn/pc? Player Name"],
+		"usages": ["Player Name", "psn Player Name", "xbox Player Name", "pc Player Name"],
 		"extendedHelp": "This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation",
 		"explainedUsage": [
-			["Platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbox\", or \"psn\"."],
+			["xbox/psn/pc", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbox\", or \"psn\"."],
 			["Player Name", "The Epic Games username of the player."]
 		],
 		"examples": ["ninja", "pc ninja", "xbox TTV R1xbox", "psn TTV IllusionOG"]
@@ -175,11 +175,11 @@
 	},
 	"overwatchDescription": "Gets player statistics for an Overwatch player",
 	"overwatchExtended": {
-		"usages": ["pc? BattleTag#00000", "xbl/psn Player Tag"],
+		"usages": ["pc BattleTag#00000", "xbl Player Tag", "psn Player Tag"],
 		"extendedHelp": "This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.\nBy default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform to \"xbl\" or \"psn\" respectively.",
 		"explainedUsage": [
-			["Platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbl\", or \"psn\""],
-			["Player", "For PC the full blizzard tag, for console the username. Case sensitive!"]
+			["pc/xbl/psn", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbl\", or \"psn\""],
+			["BattleTag#00000/Player Tag ", "For PC the full blizzard tag, for console the username. Case sensitive!"]
 		],
 		"examples": ["bame#1784", "xbl Dorus NL gamer", "psn decoda_24"],
 		"reminder": "**Player names are case sensitive!**"

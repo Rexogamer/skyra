@@ -38,7 +38,7 @@
 	"lmgtfyClick": "Click me to search",
 	"weatherDescription": "Check the weather status in a location.",
 	"weatherExtended": {
-		"usages": ["LocalityName/GoverningAreaName/CountryName/ContinentName --imperial/--fahrenheit?"],
+		"usages": ["Place", "Place --imperial/--fahrenheit"],
 		"extendedHelp": "This command uses Google Maps to get the coordinates of the place.\nOnce this command got the coordinates, it queries DarkSky to retrieve information about the weather.",
 		"explainedUsage": [["Place", "The locality, governing, country, or continent to check the weather from."]],
 		"examples": ["Antarctica", "Arizona"],

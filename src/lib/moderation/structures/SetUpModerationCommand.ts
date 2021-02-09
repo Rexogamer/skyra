@@ -2,7 +2,7 @@ import type { GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage, KeyOfType } from '#lib/types';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
-import { Argument, AsyncPreconditionResult, PieceContext, UserError } from '@sapphire/framework';
+import { Argument, PieceContext } from '@sapphire/framework';
 import type { Role } from 'discord.js';
 import { ModerationCommand } from './ModerationCommand';
 
@@ -21,27 +21,26 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 	}
 
 	public async run(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): Promise<GuildMessage | null> {
-		const result = await this.inhibit(message, args, context);
-		if (result.success) return super.run(message, args, context);
-		throw result.error;
+		await this.inhibit(message, args, context);
+		return super.run(message, args, context);
 	}
 
-	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context): AsyncPreconditionResult {
+	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.Context) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		const [id, t] = await message.guild.readSettings((settings) => [settings[this.roleKey], settings.getLanguage()]);
 
 		// Verify for role existence.
 		const role = (id && message.guild.roles.cache.get(id)) ?? null;
-		if (role) return this.ok();
+		if (role) return undefined;
 
 		// If there
 		if (!(await message.member!.isAdmin())) {
-			return this.error(new UserError({ identifier: LanguageKeys.Commands.Moderation.RestrictLowlevel }));
+			throw args.t(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 
 		if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = await this.askForRole(message, args, context);
-			if (!role.success) return role;
+			if (!role.success) return this.error(role.error);
 			await message.guild.writeSettings([[this.roleKey, role.value.id]]);
 		} else if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await message.guild.security.actions.restrictionSetup(message, this.setUpKey);
@@ -50,13 +49,13 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 			await message.send(t(LanguageKeys.Commands.Management.CommandHandlerAborted));
 		}
 
-		return this.ok();
+		return undefined;
 	}
 
 	protected async askForRole(message: GuildMessage, args: SetUpModerationCommand.Args, context: SetUpModerationCommand.Context) {
 		const response = await message.prompt(args.t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName), 30000).catch(() => null);
 		// TODO: (sapphire migration) i18n identifier
-		if (response === null) return this.error(new UserError({ identifier: 'TODO' }));
+		if (response === null) return this.error('TODO');
 
 		const argument = this.role;
 		return argument.run(response.content, { args, argument, command: this, commandContext: context, message });

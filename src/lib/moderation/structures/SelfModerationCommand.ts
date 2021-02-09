@@ -105,22 +105,17 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	}
 
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
-		const typeResult = this.getAction(args);
-		if (!typeResult.success) return typeResult;
-
-		const type = typeResult.value;
+		const type = this.getAction(args);
 		if (type === AKeys.Show) return this.show(message);
 
-		const valueResult = await this.getValue(args, type);
-		if (!valueResult.success) return valueResult;
+		let value = (await this.getValue(args, type)) as unknown;
 
 		const key = this.getProperty(type)!;
 		const t = await message.guild.writeSettings((settings) => {
-			Reflect.set(settings, key, valueResult.value);
+			Reflect.set(settings, key, value);
 			return settings.getLanguage();
 		});
 
-		let value = valueResult.value as unknown;
 		switch (type) {
 			case AKeys.SoftAction: {
 				value = SelfModerationCommand.displaySoftAction(t, value as number).join('`, `');
@@ -176,54 +171,54 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 	}
 
 	private getAction(args: SkyraCommand.Args) {
-		if (args.finished) return this.ok(AKeys.Show);
+		if (args.finished) return AKeys.Show;
 
 		const action = kActions.get(args.next().toLowerCase());
 		if (typeof action === 'undefined') {
-			return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name }));
+			throw args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
 		}
 
-		return this.ok(action);
+		return action;
 	}
 
 	private async getValue(args: SkyraCommand.Args, type: AKeys) {
-		if (type === AKeys.Enable) return this.ok(true);
-		if (type === AKeys.Disable) return this.ok(false);
-		if (type === AKeys.Show) return this.ok(null);
-		if (args.finished) return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name }));
+		if (type === AKeys.Enable) return true;
+		if (type === AKeys.Disable) return false;
+		if (type === AKeys.Show) return null;
+		if (args.finished) throw args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
 
 		if (type === AKeys.SoftAction) {
 			const softAction = kSoftActions.get(args.next().toLowerCase());
 			if (typeof softAction === 'undefined') {
-				return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name }));
+				throw args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
 			}
 
 			const previousSoftAction = await args.message.guild!.readSettings(this.keySoftAction);
-			return this.ok(SelfModerationCommand.toggle(previousSoftAction, softAction));
+			return SelfModerationCommand.toggle(previousSoftAction, softAction);
 		}
 
 		if (type === AKeys.HardAction) {
 			const hardAction = kHardActions.get(args.next().toLowerCase());
 			if (typeof hardAction === 'undefined') {
-				return this.error(args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name }));
+				throw args.t(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name });
 			}
 
-			return this.ok(hardAction);
+			return hardAction;
 		}
 
 		if (type === AKeys.HardActionDuration) {
 			const key = configurableKeys.get(this.keyHardActionDuration)!;
-			return args.pickResult('timespan', { minimum: key.minimum, maximum: key.maximum });
+			return args.pick('timespan', { minimum: key.minimum, maximum: key.maximum });
 		}
 
 		if (type === AKeys.ThresholdMaximum) {
 			const key = configurableKeys.get(this.keyThresholdMaximum)!;
-			return args.pickResult('integer', { minimum: key.minimum, maximum: key.maximum });
+			return args.pick('integer', { minimum: key.minimum, maximum: key.maximum });
 		}
 
 		if (type === AKeys.ThresholdDuration) {
 			const key = configurableKeys.get(this.keyThresholdDuration)!;
-			return args.pickResult('timespan', { minimum: key.minimum, maximum: key.maximum });
+			return args.pick('timespan', { minimum: key.minimum, maximum: key.maximum });
 		}
 
 		throw new Error('Unreachable');

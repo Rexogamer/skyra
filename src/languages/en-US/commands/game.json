@@ -17,8 +17,15 @@
 	"coinFlipCoinnames": ["Heads", "Tails"],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
-		"usages": ["heads/tails? cashless/Wager?"],
+		"usages": ["heads/tails", "heads cashless", "tails Wager"],
 		"extendedHelp": "Flip a coin. If you guess the side that shows up, you get back your wager, doubled.\nIf you don't, you lose your wager.\nYou can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.\nNow get those coins flippin'.",
+		"explainedUsage": [
+			["heads/tails", "Whether you think the coin will lands heads or tails up."],
+			[
+				"cashless, Wager",
+				"If cashless (default) then you do not input shinies for the coinflip (useful for RPG games or making decision). You can also put a wager of shinies here to gamble them."
+			]
+		],
 		"examples": ["tails", "heads 50", "tails 200", "tails cashless"]
 	},
 	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
@@ -462,15 +469,15 @@
 		"trivia": "Trivia"
 	},
 	"triviaExtended": {
-		"usages": ["Category? multiple/boolean/truefalse? easy/medium/hard? Timespan?"],
+		"usages": ["", "Category", "Category multiple/boolean/truefalse", "multiple easy/medium/hard", "hard 2m"],
 		"extendedHelp": "Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)\n\n**Categories**: {{TRIVIA_CATEGORIES}}",
 		"explainedUsage": [
-			["category", "The category questions are asked from."],
-			["type", "The type of question asked: can be boolean (true/false) or multiple choice."],
-			["difficulty", "The difficulty level of the questions asked."],
-			["duration", "The amount of time you get to answer."]
+			["Category", "The category questions are asked from."],
+			["multiple/boolean/truefalse", "Whether you want a multiple choice or a true/false question."],
+			["easy/medium/hard", "The difficulty level of the questions asked."],
+			["Timespan", "The amount of time you get to answer. The minimum is 1 second and the maximum is 1 minute"]
 		],
-		"examples": ["trivia history", "trivia books multiple easy", "trivia videogames 45"]
+		"examples": ["trivia history", "trivia books multiple easy", "trivia videogames 45s"]
 	},
 	"triviaIncorrect": "I am sorry, but **{{attempt}}** is not the correct answer. Better luck next time!",
 	"triviaInvalidCategory": "Invalid category: Please use `Skyra, help trivia` for a list of categories.",

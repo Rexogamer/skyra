@@ -108,11 +108,13 @@
 	},
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
-		"usages": ["User? User?"],
+		"usages": ["User User", "User", ""],
 		"extendedHelp": "This commands generates a ship name between two users and creates more love in the world.\nUsers are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.",
 		"explainedUsage": [
-			["firstUser", "The first user to ship"],
-			["secondUser", "The second user to ship"]
+			[
+				"User",
+				"The user(s) to ship. If you provide one then I'll ship that user with someone random. If you provide none I will pick 2 random members."
+			]
 		],
 		"examples": ["romeo juliet"],
 		"reminder": "If I cannot find either given user then I will pick someone randomly."

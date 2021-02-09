@@ -28,7 +28,7 @@ export class UserCommand extends SkyraCommand {
 		});
 
 		if (body.Heading.length === 0) {
-			return this.error(args.t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound));
+			throw args.t(LanguageKeys.Commands.Tools.DuckDuckGoNotFound);
 		}
 
 		const embed = new MessageEmbed()

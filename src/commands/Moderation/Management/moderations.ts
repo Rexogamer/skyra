@@ -24,29 +24,29 @@ const enum Type {
 	extendedHelp: LanguageKeys.Commands.Moderation.ModerationsExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	subCommands: [
-		'mute',
-		{ input: 'mutes', output: 'mute' },
-		'warning',
-		{ input: 'warnings', output: 'warning' },
-		{ input: 'warn', output: 'warning' },
-		{ input: 'warns', output: 'warning' },
+		{ input: 'mute', output: 'mutes' },
+		'mutes',
+		{ input: 'warning', output: 'warnings' },
+		'warnings',
+		{ input: 'warn', output: 'warnings' },
+		{ input: 'warns', output: 'warnings' },
 		{ input: 'all', default: true }
 	]
 })
 export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
-	public mutes(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		return this.handle(message, args, Type.Mute);
+	public mutes(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+		return this.handle(message, args, Type.Mute, commandPrefix);
 	}
 
-	public warnings(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		return this.handle(message, args, Type.Warning);
+	public warnings(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+		return this.handle(message, args, Type.Warning, commandPrefix);
 	}
 
-	public all(message: GuildMessage, args: PaginatedMessageCommand.Args) {
-		return this.handle(message, args, Type.All);
+	public all(message: GuildMessage, args: PaginatedMessageCommand.Args, { commandPrefix }: PaginatedMessageCommand.Context) {
+		return this.handle(message, args, Type.All, commandPrefix);
 	}
 
-	private async handle(message: GuildMessage, args: PaginatedMessageCommand.Args, action: Type) {
+	private async handle(message: GuildMessage, args: PaginatedMessageCommand.Args, action: Type, prefix: string) {
 		const target = args.finished ? null : await args.pick('userName');
 
 		const response = await sendLoadingMessage(message, args.t);
@@ -54,7 +54,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			this.getFilter(action, target)
 		);
 
-		if (!entries.size) throw args.t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		if (!entries.size) throw args.t(LanguageKeys.Commands.Moderation.ModerationsEmpty, { prefix });
 
 		const user = this.context.client.user!;
 		const display = new UserPaginatedMessage({

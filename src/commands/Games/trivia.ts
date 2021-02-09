@@ -20,10 +20,12 @@ export class UserCommand extends SkyraCommand {
 	#channels = new Set<string>();
 
 	public async run(message: Message, args: SkyraCommand.Args) {
+		// TODO (sapphire migration): it used to be possible to supply just 1 argument, but now category is always required.
+		// TODO For example attempting to provide `difficulty` only throws the error that it is not a valid category.
 		const category = args.finished ? CATEGORIES.general : await args.pick(UserCommand.category);
 		const questionType = args.finished ? QuestionType.Multiple : await args.pick(UserCommand.questionType).catch(() => QuestionType.Multiple);
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
-		const duration = args.finished ? 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
+		const duration = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
 
 		if (this.#channels.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.TriviaActiveGame);
 		this.#channels.add(message.channel.id);
@@ -42,7 +44,7 @@ export class UserCommand extends SkyraCommand {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
-			const collector = new MessageCollector(message.channel as TextChannel | DMChannel, filter, { time: duration * 1000 });
+			const collector = new MessageCollector(message.channel as TextChannel | DMChannel, filter, { time: duration });
 
 			let winner: User | null = null;
 			// users who have already participated

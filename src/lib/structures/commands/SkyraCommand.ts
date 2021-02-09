@@ -6,10 +6,6 @@ import {
 	Command,
 	CommandContext,
 	CommandOptions,
-	err,
-	Err,
-	ok,
-	Ok,
 	PermissionsPrecondition,
 	PieceContext,
 	PreconditionEntryResolvable,
@@ -82,21 +78,13 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args> {
 		return this.subCommands.run({ message, args, context, command: this });
 	}
 
-	protected ok(): Ok<unknown>;
-	protected ok<T>(value: T): Ok<T>;
-	protected ok<T>(value?: T): Ok<T> {
-		return ok(value!);
-	}
-
-	protected error(value: null): Err<null>;
-	protected error(value: string | UserError): Err<UserError>;
-	protected error(value: null | string | UserError): Err<UserError | null>;
-	protected error(value: null | string | UserError): Err<UserError | null> {
-		// TODO: (sapphire migration) i18n identifier
-		return err(typeof value === 'string' ? new UserError({ identifier: 'CommandError', message: value }) : value);
+	protected error(identifier: string | UserError, context?: unknown): never {
+		throw typeof identifier === 'string' ? new UserError({ identifier, context }) : identifier;
 	}
 
 	protected static resolvePreConditions(context: PieceContext, options: SkyraCommand.Options): SkyraCommand.Options {
+		options.generateDashLessAliases ??= true;
+
 		const preconditions = (options.preconditions ??= []) as PreconditionEntryResolvable[];
 
 		if (options.nsfw) preconditions.push('NSFW');

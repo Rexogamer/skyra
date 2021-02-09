@@ -35,7 +35,7 @@
 	"exportQueueSuccess": "{{GREENTICK}} Here's the current queue for {{guildName}}!",
 	"importQueueDescription": "Imports a queue saved as a `.squeue` file.",
 	"importQueueExtended": {
-		"usages": ["Hyperlink?"],
+		"usages": ["Hyperlink", ""],
 		"extendedHelp": "Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?\nWith `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!",
 		"reminder": "You can either give me a link to the `.squeue` file, or attach it to your message!"
 	},

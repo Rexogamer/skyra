@@ -25,7 +25,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) return this.error(args.t(LanguageKeys.Commands.Tools.TopInvitesNoInvites));
+		if (topTen.length === 0) throw args.t(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
 		const display = await this.buildDisplay(message, args.t, topTen);
 		await display.start(response as GuildMessage, message.author);

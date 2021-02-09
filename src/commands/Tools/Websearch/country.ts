@@ -21,7 +21,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const countries = await this.fetchAPI(args.t, countryName);
-		if (countries.length === 0) return this.error(args.t(LanguageKeys.System.QueryFail));
+		if (countries.length === 0) throw args.t(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, args.t, countries);
 		await display.start(response as GuildMessage, message.author);

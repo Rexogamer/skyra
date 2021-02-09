@@ -1,13 +1,14 @@
+import '#utils/Sanitizer/initClean';
+import 'reflect-metadata';
+
 import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
 import { TOKENS } from '#root/config';
 import { helpUsagePostProcessor, rootFolder } from '#utils/constants';
-import '#utils/Sanitizer/initClean';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import * as colorette from 'colorette';
 import i18next from 'i18next';
-import 'reflect-metadata';
 import { inspect } from 'util';
 
 inspect.defaultOptions.depth = 1;
@@ -17,6 +18,8 @@ const client = new SkyraClient();
 
 // TODO: (sapphire migration) i18n check for unused keys
 // TODO: (sapphire migration) cleanup unused and non-referenced keys from JSON files
+// TODO: (sapphire migration) revert the extra line in .prettieringore
+// TODO: (sapphire migration): reimplement command logging on CommandSuccess
 
 async function main() {
 	i18next.use(helpUsagePostProcessor);

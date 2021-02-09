@@ -305,6 +305,7 @@ export const helpUsagePostProcessor: PostProcessorModule = {
 export const clientOptions: Partial<ClientOptions> = {
 	caseInsensitiveCommands: true,
 	caseInsensitivePrefixes: true,
+	loadDefaultErrorEvents: false,
 	nms: {
 		everyone: 5,
 		role: 2

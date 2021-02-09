@@ -120,7 +120,7 @@
 	},
 	"bannerDescription": "Configure the banner for your profile.",
 	"bannerExtended": {
-		"usages": ["buy Banner", "set Banner", "reset", "show? all/user?"],
+		"usages": ["buy Banner", "set Banner", "reset", "show all/user", "all/user", ""],
 		"extendedHelp": "Banners are vertical in Skyra, they decorate your profile card.",
 		"explainedUsage": [
 			["buy", "Buy a banner, must be an ID."],
@@ -136,7 +136,7 @@
 	},
 	"autoRoleDescription": "List or configure the autoroles for a guild.",
 	"autoRoleExtended": {
-		"usages": ["add Role Integer", "remove Role", "update Role Integer", "show?"],
+		"usages": ["add Role Integer", "remove Role", "update Role Integer", "show", ""],
 		"extendedHelp": "Autoroles are roles that are available for everyone, and automatically given when they reach a configured amount of (local) points, an administrator must configure them through a setting command.\nNote that if the role name has spaces in the name you need to put `'quotes'` around the name!",
 		"explainedUsage": [
 			["add", "Add a new autorole."],
@@ -165,16 +165,23 @@
 	},
 	"leaderboardDescription": "Check the leaderboards.",
 	"leaderboardExtended": {
-		"usages": ["local/global? Index?"],
+		"usages": ["local/global Index", "local/global", "Index"],
 		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
+		"explainedUsage": [
+			["local/global", "Whether you want to view the local or global leaderboard. Defaults to \"local\"."],
+			["Index", "The page number to jump to. Defaults to 1."]
+		],
 		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds."
 	},
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
-		"usages": ["local/global? User?"],
+		"usages": ["local/global User", "local/global", "User"],
 		"extendedHelp": "How much until the next level?",
-		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]]
+		"explainedUsage": [
+			["local/global", "Whether you want to view the local or global level. Defaults to \"local\"."],
+			["User", "The user of whom you want to view the level. Defaults to your own."]
+		]
 	},
 	"marriedDescription": "Check who you are married with.",
 	"marriedExtended": {
@@ -189,7 +196,7 @@
 	},
 	"mylevelDescription": "Check your local level.",
 	"mylevelExtended": {
-		"usages": ["User?"],
+		"usages": ["User", ""],
 		"extendedHelp": "How much until next auto role? How many points do I have in this guild?",
 		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]]
 	},
@@ -205,30 +212,35 @@
 	},
 	"profileDescription": "Check your user profile.",
 	"profileExtended": {
-		"usages": ["local/global? User?"],
+		"usages": ["local/global User", "local/global", "User"],
 		"extendedHelp": "This command sends a card image with some of your user profile such as your global rank, experience...\nAdditionally, you are able to customize your colours with the 'setColor' command.",
-		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]],
+		"explainedUsage": [
+			["local/global", "Whether you want to view the local or global profile. Defaults to \"local\"."],
+			["User", "The user of whom you want to view the profile. Defaults to your own."]
+		],
 		"examples": ["@kyra", "local @kyra", ""]
 	},
 	"remindmeDescription": "Manage your reminders.",
 	"remindmeExtended": {
-		"usages": ["create? Timespan Content?", "remove/delete Identifier", "show Identifier", "list"],
+		"usages": ["Timespan", "Timespan Content", "create Timespan Content", "remove/delete ID", "show ID", "list"],
 		"extendedHelp": "This command allows you to set, delete and list reminders.",
 		"explainedUsage": [
-			["create", "Creates a new reminder given a content."],
-			["delete", "Removes an existing reminder given its ID (e.g. `1234`)."],
-			["show", "Show the contents of an existing reminder given its ID (e.g. `1234`)."],
-			["list", "Lists all active reminders."]
+			[
+				"create/remove/delete/show/list",
+				"Whether to:\n　- Create a new reminder.\n　- Delete an existing reminder given its ID (e.g. `1234`)\n　- Show the contents of an existing reminder given its ID (e.g. `1234`)\n　- List all your active reminders."
+			],
+			["Timespan", "Only needed for `create`; the amount of time to elapse before I remind you. For example `5h` for 5 hours."],
+			["ID", "Only needed for `remove`, `delete`, and `show`; The ID of the reminder to remove or show."]
 		],
 		"examples": ["me 6h to fix this command.", "list", "show 1234", "delete 1234"]
 	},
 	"reputationDescription": "Give somebody a reputation point.",
 	"reputationExtended": {
-		"usages": ["check? User?"],
+		"usages": ["", "User", "check User"],
 		"extendedHelp": "This guy is so helpful... I'll give him a reputation point!\nAdditionally, you can check how many reputation points a user has by writing 'check' before the mention.",
 		"explainedUsage": [
 			["check", "(Optional) Whether you want to check somebody (or yours) amount of reputation."],
-			["user", "The user to give a reputation point."]
+			["User", "The user to give a reputation point."]
 		],
 		"reminder": "You can give a reputation point once every 24 hours.",
 		"examples": ["check @kyra", "check", "@kyra", "check \"User With Spaces\"", "\"User With Spaces\""]
@@ -245,7 +257,7 @@
 			["B10", "14671839"]
 		]
 	},
-	"vaultDescription": "Store your {{SHINY}}'s securily in a vault so you cannot accidentally spend them gambling.",
+	"vaultDescription": "Store your {{SHINY}}'s securely in a vault so you cannot accidentally spend them gambling.",
 	"vaultEmbedData": {
 		"accountMoney": "Account Money",
 		"accountVault": "Account Vault",
@@ -254,12 +266,14 @@
 		"withdrewDescription": "Withdrew {{coins}} {{SHINY}} from your vault."
 	},
 	"vaultExtended": {
-		"usages": ["deposit all/Amount", "withdraw all/Amount", "show?"],
+		"usages": ["deposit all/Amount", "withdraw all/Amount", "show", ""],
 		"extendedHelp": "This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.\nYou need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling.",
 		"explainedUsage": [
-			["deposit", "Deposit all or a specified amount of {{SHINY}} into your vault."],
-			["withdraw", "Withdraw all or a specified amount of {{SHINY}} from your vault."],
-			["show", "Shows the amount of {{SHINY}} in both your wallet and your vault."]
+			[
+				"deposit/withdraw/show",
+				"Whether to\n　- Deposit all or a specified amount of {{SHINY}} into your vault.\n　- Withdraw all or a specified amount of {{SHINY}} from your vault\n　- Show the amount of {{SHINY}} in both your wallet and your vault."
+			],
+			["all/Amount", "Only needed for `deposit` and `show`; The amount to deposit or withdraw, or everything if `all`."]
 		],
 		"examples": ["deposit 10000", "withdraw 10000", "show", ""]
 	},

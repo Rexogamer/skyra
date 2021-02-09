@@ -13,12 +13,12 @@
 	"slowmodeTooLong": "{{REDCROSS}} The maximum amount of time you can set is 6 hours.",
 	"timeDescription": "Set the timer.",
 	"timeExtended": {
-		"usages": ["Case Duration", "cancel? Case"],
+		"usages": ["Case Duration", "cancel Case Duration"],
 		"extendedHelp": "Updates the timer for a moderation case..",
 		"explainedUsage": [
-			["cancel", "Whether or not you want to cancel the timer."],
-			["case", "The case you want to update"],
-			["timer", "The timer, ignored if `cancel` was defined."]
+			["Cancel", "Whether or not you want to cancel the timer. Defaults to \"no\"."],
+			["Case", "The case you want to update"],
+			["Duration", "The timer, ignored if `cancel` was defined."]
 		],
 		"examples": ["cancel 1234", "1234 6h"]
 	},
@@ -84,9 +84,13 @@
 	"moderationDays": "days?",
 	"historyDescription": "Display the count of moderation cases from this guild or from a user.",
 	"historyExtended": {
-		"usages": ["details User", "overview? User"],
+		"usages": ["", "details", "details User", "overview User"],
 		"extendedHelp": "This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been appealed.",
-		"examples": ["", "@Pete"]
+		"explainedUsage": [
+			["details/overview", "Whether to get a detailed view or just a summary. Defaults to \"overview\"."],
+			["User", "The user for whom to get the information. Defaults to you yourself."]
+		],
+		"examples": ["", "overview", "details", "@Pete", "details @Pete", "overview Pete"]
 	},
 	"historyFooterNew": "This user has {{warnings}} {{warningsText}}, {{mutes}} {{mutesText}}, {{kicks}} {{kicksText}}, and {{bans}} {{bansText}}",
 	"historyFooterWarning": "warning",
@@ -99,22 +103,29 @@
 	"historyFooterBans_plural": "bans",
 	"moderationsDescription": "List all running moderation logs from this guild.",
 	"moderationsExtended": {
-		"usages": ["mute/warn/all? User?"],
+		"usages": ["", "mutes/warnings/all", "User", "mutes/warnings/all User"],
 		"extendedHelp": "This command shows you all the temporary moderation actions that are still running. This command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
+		"explainedUsage": [
+			[
+				"mutes/warnings/all",
+				"Whether to get just the mutes, just the warnings or everything. When providing either `mutes` or `warnings` then all moderations of that type are shown, not just the temporary ones."
+			],
+			["User", "The user for whom to get the information. Defaults to all users."]
+		],
 		"examples": ["", "@Pete", "mutes @Pete", "warnings"]
 	},
-	"moderationsEmpty": "Nobody has behaved badly yet, who will be the first user to be listed here?",
+	"moderationsEmpty": "There are no active moderations that will expire at some future date or time. If you want to see all moderations in this server use: `{{prefix}}history`.",
 	"moderationsAmount": "There is 1 entry.",
 	"moderationsAmount_plural": "There are {{count}} entries.",
 	"mutesDescription": "List all mutes from this guild or from a user.",
 	"mutesExtended": {
-		"usages": ["User?"],
+		"usages": ["", "User"],
 		"extendedHelp": "This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
 		"examples": ["", "@Pete"]
 	},
 	"warningsDescription": "List all warnings from this guild or from a user.",
 	"warningsExtended": {
-		"usages": ["User?"],
+		"usages": ["", "User"],
 		"extendedHelp": "This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
 		"examples": ["", "@Pete"]
 	},
@@ -127,9 +138,18 @@
 	},
 	"banDescription": "Hit somebody with the ban hammer.",
 	"banExtended": {
-		"usages": ["User1, User2?, User3?...User10? Duration? Reason?"],
+		"usages": ["User", "User1, User2, User3...User10", "User1 Duration", "User1, User2 Duration Reason", "User --days"],
 		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the guild's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
-		"examples": ["@Pete", "@Pete Spamming all channels.", "@Pete 24h Spamming all channels"]
+		"explainedUsage": [
+			["User/User1/User2", "The user(s) to ban. Can be up to a total of 10 users."],
+			[
+				"Duration",
+				"The amount of time this ban should last. For example 24h for 24 hours. The user(s) will be automatically unbanned after this time."
+			],
+			["Reason", "The reason for the ban. This will also show in the server's audit logs."],
+			["--days", "The amount of days of messages to prune. Should be a number between a minimum of 0 and maximum of 7."]
+		],
+		"examples": ["@Pete", "@Pete Spamming all channels.", "@Pete @Jack @John 24h Raiding"]
 	},
 	"dehoistDescription": "Shoot everyone with the Dehoistinator 3000",
 	"dehoistExtended": {
@@ -138,15 +158,28 @@
 	},
 	"kickDescription": "Hit somebody with the 👢.",
 	"kickExtended": {
-		"usages": ["User1, User2?, User3?...User10? Reason?"],
+		"usages": ["User", "User1, User2, User3...User10", "User Reason"],
 		"extendedHelp": "This command requires **{{KICK_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be kicked by me. No, the guild's owner cannot be kicked.",
+		"explainedUsage": [
+			["User/User1/User2", "The user(s) to kick. Can be up to a total of 10 users."],
+			["Reason", "The reason for the kick. This will also show in the server's audit logs."]
+		],
 		"examples": ["@Sarah", "@Sarah Spamming general chat."]
 	},
 	"lockdownDescription": "Close the gates for this channel!",
 	"lockdownExtended": {
-		"usages": ["lock TextChannel? Duration?", "unlock TextChannel?", "auto? TextChannel? Duration?"],
+		"usages": ["", "lock TextChannel Duration", "unlock TextChannel", "TextChannel Duration"],
 		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** in order to be able to manage the permissions for a channel.\nThis command removes the permission **{{SEND_MESSAGES, permissions}}** to the `@everyone` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.\nOptionally, you can pass time as second argument.",
-		"examples": ["", "#general", "lock #general 5m", "unlock #general"]
+		"explainedUsage": [
+			[
+				"lock/unlock",
+				"Whether to lock or unlock the channel. Defaults to \"lock\" if the channel is currently unlocked, or \"unlock\" if it is currently locked."
+			],
+			["TextChannel", "The channel to lock. Defaults to the current channel."],
+			["Duration", "The amount of time this lock should last. Defaults to infinite."]
+		],
+		"examples": ["", "#general", "lock #general 5m", "unlock #general"],
+		"reminder": "If your members need a role such as \"member\" to send messages in the channel to begin with then this command will not work. It is in our backlog of work to add make the role that should be locked configurable."
 	},
 	"muteDescription": "Mute a user in all text and voice channels.",
 	"muteExtended": {
