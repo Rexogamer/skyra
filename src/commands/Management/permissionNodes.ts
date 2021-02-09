@@ -23,7 +23,7 @@ export class UserCommand extends SkyraCommand {
 		const action = await args.pick(UserCommand.type);
 		const command = await args.pick('command');
 
-		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
 		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.add(target, command.name, action);
@@ -37,7 +37,7 @@ export class UserCommand extends SkyraCommand {
 		const action = await args.pick(UserCommand.type);
 		const command = await args.pick('command');
 
-		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) return this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
 		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.remove(target, command.name, action);
@@ -49,7 +49,7 @@ export class UserCommand extends SkyraCommand {
 	public async reset(message: GuildMessage, args: SkyraCommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 
-		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) return this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
 		await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.reset(target);
@@ -61,13 +61,13 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const target = await args.pick('roleName').catch(() => args.pick('member'));
 
-		if (!this.checkPermissions(message, target)) throw args.t(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) return this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = await message.guild.readSettings(key);
 		const node = nodes.find((n) => n.id === target.id);
-		if (typeof node === 'undefined') throw args.t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+		if (typeof node === 'undefined') return this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		return message.send([
 			args.t(LanguageKeys.Commands.Management.PermissionNodesShowName, {

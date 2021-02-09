@@ -40,13 +40,13 @@ export class UserCommand extends SkyraCommand {
 			}
 		} else if (tributes.length === 0) {
 			const prefix = await message.guild.readSettings(GuildSettings.Prefix);
-			throw args.t(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
+			this.error(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
 		}
 
 		const filtered = new Set(tributes);
-		if (filtered.size !== tributes.length) throw args.t(LanguageKeys.Commands.Games.GamesRepeat);
-		if (this.playing.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.GamesProgress);
-		if (filtered.size < 4 || filtered.size > 48) throw args.t(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
+		if (filtered.size !== tributes.length) this.error(LanguageKeys.Commands.Games.GamesRepeat);
+		if (this.playing.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
+		if (filtered.size < 4 || filtered.size > 48) this.error(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value: boolean) => void) | null = null;

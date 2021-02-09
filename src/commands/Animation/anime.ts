@@ -25,7 +25,7 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 		const response = await sendLoadingMessage(message, args.t);
 
 		const { hits: entries } = await this.fetchAPI(args.t, animeName);
-		if (!entries.length) throw args.t(LanguageKeys.System.NoResults);
+		if (!entries.length) this.error(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, args.t, message);
 

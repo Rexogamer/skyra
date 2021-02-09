@@ -29,9 +29,9 @@ export class UserPaginatedMessageCommand extends PaginatedMessageCommand {
 
 		const overwatchData = await this.fetchAPI(args.t, player, platform);
 
-		if (overwatchData.error) throw args.t(LanguageKeys.System.QueryFail);
+		if (overwatchData.error) this.error(LanguageKeys.System.QueryFail);
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
-			throw args.t(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
+			this.error(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
 		}
 
 		const display = await this.buildDisplay(message, args.t, overwatchData, player, platform);

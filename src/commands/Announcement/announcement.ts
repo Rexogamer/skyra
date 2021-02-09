@@ -33,12 +33,12 @@ export class UserCommand extends SkyraCommand {
 			GuildSettings.Channels.Announcements,
 			GuildSettings.Messages.AnnouncementEmbed
 		]);
-		if (!channelID) throw args.t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channelID) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
 		const channel = message.guild.channels.cache.get(channelID) as TextChannel;
-		if (!channel) throw args.t(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channel) this.error(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		if (!channel.postable) throw args.t(LanguageKeys.System.ChannelNotPostable);
+		if (!channel.postable) this.error(LanguageKeys.System.ChannelNotPostable);
 
 		const role = await announcementCheck(message);
 		const header = args.t(LanguageKeys.Commands.Announcement.AnnouncementHeader, { role: role.toString() });

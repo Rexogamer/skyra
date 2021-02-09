@@ -26,7 +26,7 @@ export class UserCommand extends SkyraCommand {
 	public async show(message: GuildMessage, args: SkyraCommand.Args) {
 		const key = await args.pick('string');
 		const schemaValue = configurableGroups.getPathString(key);
-		if (schemaValue === null) throw args.t(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
 		const output = await message.guild.readSettings((settings) => {
 			return schemaValue.display(settings, args.t);
@@ -83,10 +83,10 @@ export class UserCommand extends SkyraCommand {
 	private async fetchKey(args: SkyraCommand.Args) {
 		const key = await args.pick('string');
 		const value = configurableGroups.getPathString(key);
-		if (value === null) throw args.t(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
-		if (value.dashboardOnly) throw args.t(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
+		if (value === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (value.dashboardOnly) this.error(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
 		if (isSchemaGroup(value)) {
-			throw args.t(LanguageKeys.Settings.Gateway.ChooseKey, {
+			this.error(LanguageKeys.Settings.Gateway.ChooseKey, {
 				keys: [...map(value.childKeys(), (value) => `\`${value}\``)].join(', ')
 			});
 		}

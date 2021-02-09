@@ -23,8 +23,8 @@ export class UserCommand extends SkyraCommand {
 
 		const time = await args.pick('time');
 		const offset = time.getTime() - Date.now();
-		if (offset < 9500) throw args.t(LanguageKeys.Giveaway.Time);
-		if (offset > Time.Year) throw args.t(LanguageKeys.Giveaway.TimeTooLong);
+		if (offset < 9500) this.error(LanguageKeys.Giveaway.Time);
+		if (offset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 
 		const winners = Math.min(await args.pick(UserCommand.winners).catch(() => parseInt(args.getOption('winners') ?? '1', 10)), 25);
 		const title = await args.rest('string', { maximum: 256 });

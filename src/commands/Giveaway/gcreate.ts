@@ -30,8 +30,8 @@ export class UserCommand extends SkyraCommand {
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
-		if (durationOffset < 9500 || scheduleOffset < 9500) throw args.t(LanguageKeys.Giveaway.Time);
-		if (durationOffset > Time.Year || scheduleOffset > Time.Year) throw args.t(LanguageKeys.Giveaway.TimeTooLong);
+		if (durationOffset < 9500 || scheduleOffset < 9500) this.error(LanguageKeys.Giveaway.Time);
+		if (durationOffset > Time.Year || scheduleOffset > Time.Year) this.error(LanguageKeys.Giveaway.TimeTooLong);
 		if (winners > 25) winners = 25;
 
 		// This creates an single time task to start the giveaway

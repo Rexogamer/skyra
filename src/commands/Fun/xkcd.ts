@@ -19,7 +19,7 @@ export class UserCommand extends SkyraCommand {
 
 		const comicNumber = await this.getNumber(query, args.t);
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
-			throw args.t(LanguageKeys.Commands.Fun.XkcdNotFound);
+			this.error(LanguageKeys.Commands.Fun.XkcdNotFound);
 		});
 
 		return message.send(

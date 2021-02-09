@@ -33,7 +33,7 @@ export class UserCommand extends SkyraCommand {
 
 			const list = settings[key];
 			const alreadySet = list.some((entry) => entry.input === input);
-			if (alreadySet) throw args.t(LanguageKeys.Commands.Management.TriggersAddTaken);
+			if (alreadySet) this.error(LanguageKeys.Commands.Management.TriggersAddTaken);
 
 			list.push(this.format(type, input, output) as any);
 		});
@@ -49,16 +49,17 @@ export class UserCommand extends SkyraCommand {
 
 			const list = settings[key];
 			const index = list.findIndex((entry) => entry.input === input);
-			if (index === -1) throw args.t(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
+			if (index === -1) return this.error(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
 
 			list.splice(index, 1);
+			return undefined;
 		});
 
 		return message.send(args.t(LanguageKeys.Commands.Management.TriggersRemove));
 	}
 
 	@requiresPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async show(message: GuildMessage, args: SkyraCommand.Args) {
+	public async show(message: GuildMessage) {
 		const [aliases, includes] = await message.guild.readSettings([GuildSettings.Trigger.Alias, GuildSettings.Trigger.Includes]);
 
 		const output: string[] = [];
@@ -68,7 +69,7 @@ export class UserCommand extends SkyraCommand {
 		for (const react of includes) {
 			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
-		if (!output.length) throw args.t(LanguageKeys.Commands.Management.TriggersListEmpty);
+		if (!output.length) return this.error(LanguageKeys.Commands.Management.TriggersListEmpty);
 
 		const display = new UserPaginatedMessage({
 			template: new MessageEmbed()

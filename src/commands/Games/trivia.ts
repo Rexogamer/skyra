@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 		const difficulty = await args.pick(UserCommand.questionDifficulty).catch(() => QuestionDifficulty.Easy);
 		const duration = args.finished ? Time.Second * 30 : await args.pick('timespan', { minimum: Time.Second, maximum: Time.Minute });
 
-		if (this.#channels.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.TriviaActiveGame);
+		if (this.#channels.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.TriviaActiveGame);
 		this.#channels.add(message.channel.id);
 
 		try {
@@ -50,7 +50,7 @@ export class UserCommand extends SkyraCommand {
 			// users who have already participated
 			const participants = new Set<string>();
 
-			collector
+			return collector
 				.on('collect', (collected: Message) => {
 					if (participants.has(collected.author.id)) return;
 					const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
@@ -69,7 +69,7 @@ export class UserCommand extends SkyraCommand {
 		} catch (error) {
 			this.#channels.delete(message.channel.id);
 			this.context.client.logger.fatal(error);
-			throw args.t(LanguageKeys.Misc.UnexpectedIssue);
+			return this.error(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}
 

@@ -16,12 +16,12 @@ export class UserCommand extends SkyraCommand {
 	public async run(message: GuildMessage, args: SkyraCommand.Args) {
 		const user = await args.pick('userName');
 
-		if (user.id === CLIENT_ID) throw args.t(LanguageKeys.Commands.Games.GamesSkyra);
-		if (user.bot) throw args.t(LanguageKeys.Commands.Games.GamesBot);
-		if (user.id === message.author.id) throw args.t(LanguageKeys.Commands.Games.GamesSelf);
+		if (user.id === CLIENT_ID) this.error(LanguageKeys.Commands.Games.GamesSkyra);
+		if (user.bot) this.error(LanguageKeys.Commands.Games.GamesBot);
+		if (user.id === message.author.id) this.error(LanguageKeys.Commands.Games.GamesSelf);
 
 		const { client } = this.context;
-		if (client.connectFour.has(message.channel.id)) throw args.t(LanguageKeys.Commands.Games.GamesProgress);
+		if (client.connectFour.has(message.channel.id)) this.error(LanguageKeys.Commands.Games.GamesProgress);
 		client.connectFour.set(message.channel.id, null);
 
 		try {
@@ -37,11 +37,11 @@ export class UserCommand extends SkyraCommand {
 			if (response) {
 				await client.connectFour.create(message, message.author, user)!.run();
 			} else {
-				await message.alert(args.t(LanguageKeys.Commands.Games.GamesPromptDeny));
+				this.error(LanguageKeys.Commands.Games.GamesPromptDeny);
 			}
 		} catch (error) {
 			if (typeof error !== 'string') client.logger.fatal(error);
-			await message.alert(args.t(LanguageKeys.Commands.Games.GamesPromptTimeout));
+			this.error(LanguageKeys.Commands.Games.GamesPromptTimeout);
 		} finally {
 			client.connectFour.delete(message.channel.id);
 		}
