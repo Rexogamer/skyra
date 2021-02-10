@@ -132,7 +132,7 @@
 		"pretty-quick": "^3.1.0",
 		"ts-jest": "^26.5.1",
 		"ts-node": "^9.1.1",
-		"typescript": "4.2.0-insiders.20210210"
+		"typescript": "4.2.0-beta"
 	},
 	"resolutions": {
 		"acorn": "^8.0.5",
